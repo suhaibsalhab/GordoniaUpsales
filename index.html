@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gordonia Up & Downsells Calculator</title>
+    <script>
+      const correctPassword = "777777";
+
+      if (sessionStorage.getItem("authenticated") !== "true") {
+        let userInput = prompt("נא להזין סיסמה כדי לגשת לאתר:");
+        
+        if (userInput === correctPassword) {
+          sessionStorage.setItem("authenticated", "true");
+        } else {
+          alert("סיסמה שגויה!");
+          window.location.href = "https://google.com";
+        }
+      }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #EFECE6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+        }
+        .calculator-card {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: 480px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #1e293b;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 14px;
+        }
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            background-color: #fff;
+            transition: border-color 0.2s;
+        }
+        select:focus, input:focus {
+            border-color: #2563eb;
+        }
+        .room-info {
+            font-size: 12px;
+            color: #2563eb;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+        .discount-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .btn-discount {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #334155;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .btn-discount:hover, .btn-discount.active {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 14px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .result-box.upsell {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+        }
+        .result-box.downgrade {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        .price-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .upsell .price-label { color: #0369a1; }
+        .downgrade .price-label { color: #991b1b; }
+
+        .original-price {
+            font-size: 15px;
+            text-decoration: line-through;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        .final-price {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .upsell .final-price { color: #0284c7; }
+        .downgrade .final-price { color: #dc2626; }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <h2>מחשבון שדרוג ושנמוך לפי מספר חדר</h2>
+    
+    <div class="form-group">
+        <label for="currentRoomNum">מספר חדר נוכחי:</label>
+        <select id="currentRoomNum" onchange="calculatePrice()">
+            <option value="">-- בחר מספר חדר --</option>
+            <option value="1">חדר 1</option>
+            <option value="2">חדר 2</option>
+            <option value="3">חדר 3</option>
+            <option value="4">חדר 4</option>
+            <option value="5">חדר 5</option>
+            <option value="6">חדר 6</option>
+            <option value="7">חדר 7</option>
+            <option value="8">חדר 8</option>
+            <option value="9">חדר 9</option>
+            <option value="10">חדר 10</option>
+            <option value="11">חדר 11</option>
+            <option value="12">חדר 12</option>
+            <option value="13">חדר 13</option>
+            <option value="14">חדר 14</option>
+            <option value="15">חדר 15</option>
+            <option value="16">חדר 16</option>
+            <option value="17">חדר 17</option>
+            <option value="18">חדר 18</option>
+            <option value="19">חדר 19</option>
+            <option value="20">חדר 20</option>
+            <option value="21">חדר 21</option>
+            <option value="22">חדר 22</option>
+            <option value="23">חדר 23</option>
+            <option value="24">חדר 24</option>
+            <option value="25">חדר 25</option>
+            <option value="26">חדר 26</option>
+            <option value="27">חדר 27</option>
+            <option value="28">חדר 28</option>
+            <option value="29">חדר 29</option>
+            <option value="30">חדר 30</option>
+            <option value="31">חדר 31</option>
+            <option value="32">חדר 32</option>
+            <option value="33">חדר 33</option>
+            <option value="34">חדר 34</option>
+            <option value="35">חדר 35</option>
+            <option value="36">חדר 36</option>
+            <option value="37">חדר 37</option>
+            <option value="38">חדר 38</option>
+            <option value="39">חדר 39</option>
+            <option value="40">חדר 40</option>
+        </select>
+        <div id="currentRoomType" class="room-info"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="targetRoomNum">מספר חדר מבוקש:</label>
+        <select id="targetRoomNum" onchange="calculatePrice()">
+            <option value="">-- בחר מספר חדר --</option>
+            <option value="1">חדר 1</option>
+            <option value="2">חדר 2</option>
+            <option value="3">חדר 3</option>
+            <option value="4">חדר 4</option>
+            <option value="5">חדר 5</option>
+            <option value="6">חדר 6</option>
+            <option value="7">חדר 7</option>
+            <option value="8">חדר 8</option>
+            <option value="9">חדר 9</option>
+            <option value="10">חדר 10</option>
+            <option value="11">חדר 11</option>
+            <option value="12">חדר 12</option>
+            <option value="13">חדר 13</option>
+            <option value="14">חדר 14</option>
+            <option value="15">חדר 15</option>
+            <option value="16">חדר 16</option>
+            <option value="17">חדר 17</option>
+            <option value="18">חדר 18</option>
+            <option value="19">חדר 19</option>
+            <option value="20">חדר 20</option>
+            <option value="21">חדר 21</option>
+            <option value="22">חדר 22</option>
+            <option value="23">חדר 23</option>
+            <option value="24">חדר 24</option>
+            <option value="25">חדר 25</option>
+            <option value="26">חדר 26</option>
+            <option value="27">חדר 27</option>
+            <option value="28">חדר 28</option>
+            <option value="29">חדר 29</option>
+            <option value="30">חדר 30</option>
+            <option value="31">חדר 31</option>
+            <option value="32">חדר 32</option>
+            <option value="33">חדר 33</option>
+            <option value="34">חדר 34</option>
+            <option value="35">חדר 35</option>
+            <option value="36">חדר 36</option>
+            <option value="37">חדר 37</option>
+            <option value="38">חדר 38</option>
+            <option value="39">חדר 39</option>
+            <option value="40">חדר 40</option>
+        </select>
+        <div id="targetRoomType" class="room-info"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="nightsCount">מספר לילות:</label>
+        <input type="number" id="nightsCount" min="1" value="1" oninput="calculatePrice()">
+    </div>
+
+    <div id="discountSection" class="form-group">
+        <label>אחוזי הנחה מהירים (בשדרוג):</label>
+        <div class="discount-buttons">
+            <button class="btn-discount active" onclick="setDiscount(0, this)">0%</button>
+            <button class="btn-discount" onclick="setDiscount(10, this)">10%</button>
+            <button class="btn-discount" onclick="setDiscount(20, this)">20%</button>
+            <button class="btn-discount" onclick="setDiscount(50, this)">50%</button>
+        </div>
+        <label for="customDiscount" style="margin-top: 10px;">או הזן אחוז הנחה מותאם אישית (%):</label>
+        <input type="number" id="customDiscount" min="0" max="100" value="0" oninput="onCustomDiscountChange(this.value)">
+    </div>
+
+    <div id="resultBox" class="result-box upsell">
+        <div id="priceLabel" class="price-label">מחיר שדרוג סופי לחיוב:</div>
+        <div id="originalPrice" class="original-price" style="display:none;">₪ 0</div>
+        <div id="finalPrice" class="final-price">₪ 0</div>
+    </div>
+</div>
+
+<script>
+    const roomMapping = {
+        1: "JS-SPMV", 2: "JS-SPMV", 3: "JS-SPMV", 4: "JS-SPMV",
+        5: "JS-PPLTLPMV", 8: "JS-PPLTLPMV",
+        6: "JS-PPLTMV", 7: "JS-PPLTMV",
+        9: "JS-PPGV", 10: "JS-PPGV", 11: "JS-PPGV", 12: "JS-PPGV", 13: "JS-PPGV", 16: "JS-PPGV",
+        14: "ExclusiveS",
+        15: "Premium Su",
+        17: "JS-PPUT", 18: "JS-PPUT", 19: "JS-PPUT", 20: "JS-PPUT", 21: "JS-PPUT",
+        22: "JS-PPJMV", 23: "JS-PPJMV",
+        24: "ExclusJMV",
+        25: "JS-PPPrGard", 26: "JS-PPPrGard", 27: "JS-PPPrGard",
+        28: "JuniorSMV", 29: "JuniorSMV", 30: "JuniorSMV", 31: "JuniorSMV", 32: "JuniorSMV",
+        33: "JuniorSMV", 34: "JuniorSMV", 35: "JuniorSMV", 36: "JuniorSMV", 38: "JuniorSMV", 39: "JuniorSMV", 40: "JuniorSMV",
+        37: "ExclusivRT"
+    };
+
+    const upsellMatrix = {
+        "JS-SPMV": {"JuniorSMV": 400},
+        "JS-PPGV": {"JuniorSMV": 950, "JS-SPMV": 550},
+        "JS-PPUT": {"JuniorSMV": 950, "JS-SPMV": 550, "JS-PPGV": 0},
+        "JS-PPJMV": {"JuniorSMV": 1150, "JS-SPMV": 750, "JS-PPGV": 200, "JS-PPUT": 200},
+        "JS-PPPrGard": {"JuniorSMV": 1150, "JS-SPMV": 750, "JS-PPGV": 200, "JS-PPUT": 200, "JS-PPJMV": 0},
+        "Premium Su": {"JuniorSMV": 1150, "JS-SPMV": 750, "JS-PPGV": 200, "JS-PPUT": 200, "JS-PPJMV": 0, "JS-PPPrGard": 0},
+        "JS-PPLTMV": {"JuniorSMV": 1350, "JS-SPMV": 950, "JS-PPGV": 400, "JS-PPUT": 400, "JS-PPJMV": 200, "JS-PPPrGard": 200, "Premium Su": 200},
+        "JS-PPLTLPMV": {"JuniorSMV": 1550, "JS-SPMV": 1150, "JS-PPGV": 600, "JS-PPUT": 600, "JS-PPJMV": 400, "JS-PPPrGard": 400, "Premium Su": 400, "JS-PPLTMV": 200},
+        "ExclusiveS": {"JuniorSMV": 2850, "JS-SPMV": 2450, "JS-PPGV": 1900, "JS-PPUT": 1900, "JS-PPJMV": 1700, "JS-PPPrGard": 1700, "Premium Su": 1700, "JS-PPLTMV": 1500, "JS-PPLTLPMV": 1300},
+        "ExclusJMV": {"JuniorSMV": 3050, "JS-SPMV": 2650, "JS-PPGV": 2100, "JS-PPUT": 2100, "JS-PPJMV": 1900, "JS-PPPrGard": 1900, "Premium Su": 1900, "JS-PPLTMV": 1700, "JS-PPLTLPMV": 200, "ExclusiveS": 200},
+        "ExclusivRT": {"JuniorSMV": 3600, "JS-SPMV": 3200, "JS-PPGV": 2650, "JS-PPUT": 2650, "JS-PPJMV": 2450, "JS-PPPrGard": 2450, "Premium Su": 2450, "JS-PPLTMV": 2250, "JS-PPLTLPMV": 550, "ExclusiveS": 750, "ExclusJMV": 550}
+    };
+
+    // מפת استثناءات لجدول الـ 50% (Discounted Supplement)
+    const discountExceptions = {
+        "JS-SPMV": {"JuniorSMV": 250} // استثناء: 250 بدلاً من 200
+    };
+
+    let currentDiscount = 0;
+
+    function setDiscount(val, btn) {
+        currentDiscount = val;
+        document.getElementById('customDiscount').value = val;
+        document.querySelectorAll('.btn-discount').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+        calculatePrice();
+    }
+
+    function onCustomDiscountChange(val) {
+        currentDiscount = parseFloat(val) || 0;
+        document.querySelectorAll('.btn-discount').forEach(b => b.classList.remove('active'));
+        calculatePrice();
+    }
+
+    function calculatePrice() {
+        const fromNum = document.getElementById('currentRoomNum').value;
+        const toNum = document.getElementById('targetRoomNum').value;
+        const nights = parseInt(document.getElementById('nightsCount').value) || 1;
+
+        const currentTypeDiv = document.getElementById('currentRoomType');
+        const targetTypeDiv = document.getElementById('targetRoomType');
+
+        const from = roomMapping[fromNum];
+        const to = roomMapping[toNum];
+
+        currentTypeDiv.innerText = from ? `סוג חדר: ${from}` : '';
+        targetTypeDiv.innerText = to ? `סוג חדר: ${to}` : '';
+
+        const resultBox = document.getElementById('resultBox');
+        const priceLabel = document.getElementById('priceLabel');
+        const discountSection = document.getElementById('discountSection');
+
+        if (!from || !to || from === to) {
+            resultBox.className = "result-box upsell";
+            priceLabel.innerText = "מחיר שדרוג סופי לחיוב:";
+            discountSection.style.display = "block";
+            updateUI(0, 0, false);
+            return;
+        }
+
+        if (upsellMatrix[to] && upsellMatrix[to][from] !== undefined) {
+            resultBox.className = "result-box upsell";
+            priceLabel.innerText = "מחיר שדרוג סופי לחיוב:";
+            discountSection.style.display = "block";
+
+            let basePricePerNight = upsellMatrix[to][from];
+            let totalPrice = basePricePerNight * nights;
+            let discountedPrice;
+
+            // في حال تم اختيار 50% وتم العثور على استثناء محدد
+            if (currentDiscount === 50 && discountExceptions[to] && discountExceptions[to][from] !== undefined) {
+                discountedPrice = discountExceptions[to][from] * nights;
+            } else {
+                discountedPrice = totalPrice - (totalPrice * (currentDiscount / 100));
+            }
+
+            updateUI(totalPrice, discountedPrice, true);
+        }
+        else if (upsellMatrix[from] && upsellMatrix[from][to] !== undefined) {
+            resultBox.className = "result-box downgrade";
+            priceLabel.innerText = "סכום להחזר לאורח (זיכוי):";
+            discountSection.style.display = "none";
+
+            let refundPricePerNight = upsellMatrix[from][to];
+            let totalRefund = refundPricePerNight * nights;
+            updateUI(totalRefund, totalRefund, false);
+        } else {
+            document.getElementById('finalPrice').innerText = "לא זמין";
+            document.getElementById('originalPrice').style.display = "none";
+        }
+    }
+
+    function updateUI(basePrice, finalPrice, isDiscountApplicable) {
+        const origElem = document.getElementById('originalPrice');
+        const finalElem = document.getElementById('finalPrice');
+
+        if (isDiscountApplicable && currentDiscount > 0 && basePrice > 0) {
+            origElem.innerText = `₪ ${basePrice.toLocaleString()}`;
+            origElem.style.display = "block";
+        } else {
+            origElem.style.display = "none";
+        }
+
+        finalElem.innerText = `₪ ${finalPrice.toLocaleString()}`;
+    }
+</script>
+
+</body>
+</html>
