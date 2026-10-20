@@ -291,9 +291,9 @@
         "ExclusivRT": {"JuniorSMV": 3600, "JS-SPMV": 3200, "JS-PPGV": 2650, "JS-PPUT": 2650, "JS-PPJMV": 2450, "JS-PPPrGard": 2450, "Premium Su": 2450, "JS-PPLTMV": 2250, "JS-PPLTLPMV": 550, "ExclusiveS": 750, "ExclusJMV": 550}
     };
 
-    // מפת استثناءات لجدول الـ 50% (Discounted Supplement)
+    
     const discountExceptions = {
-        "JS-SPMV": {"JuniorSMV": 250} // استثناء: 250 بدلاً من 200
+        "JS-SPMV": {"JuniorSMV": 250} 
     };
 
     let currentDiscount = 0;
@@ -347,7 +347,6 @@
             let totalPrice = basePricePerNight * nights;
             let discountedPrice;
 
-            // في حال تم اختيار 50% وتم العثور على استثناء محدد
             if (currentDiscount === 50 && discountExceptions[to] && discountExceptions[to][from] !== undefined) {
                 discountedPrice = discountExceptions[to][from] * nights;
             } else {
